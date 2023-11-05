@@ -90,7 +90,8 @@ TfLiteStatus LoadFloatModelAndPerformInference() {
   float golden_inputs[kNumTestValues] = {0.f, 1.f, 3.f, 5.f};
 
   for (int i = 0; i < kNumTestValues; ++i) {
-    interpreter.input(0)->data.f[0] = golden_inputs[i];
+    // Modified this line to make an error
+    interpreter.input(0)->data.f[0] = golden_inputs[i] + 1.0; // Add 1.0 to create an error
     TF_LITE_ENSURE_STATUS(interpreter.Invoke());
     float y_pred = interpreter.output(0)->data.f[0];
     TFLITE_CHECK_LE(abs(sin(golden_inputs[i]) - y_pred), epsilon);
@@ -98,6 +99,7 @@ TfLiteStatus LoadFloatModelAndPerformInference() {
 
   return kTfLiteOk;
 }
+
 
 TfLiteStatus LoadQuantModelAndPerformInference() {
   // Map the model into a usable data structure. This doesn't involve any
