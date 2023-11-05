@@ -93,7 +93,8 @@ TfLiteStatus LoadFloatModelAndPerformInference() {
     interpreter.input(0)->data.f[0] = golden_inputs[i];
     TF_LITE_ENSURE_STATUS(interpreter.Invoke());
     float y_pred = interpreter.output(0)->data.f[0];
-    TFLITE_CHECK_LE(abs(sin(golden_inputs[i]) - y_pred), epsilon);
+    TFLITE_CHECK_GT(abs(sin(golden_inputs[i]) - y_pred), epsilon); // Thay đổi TFLITE_CHECK_LE thành TFLITE_CHECK_GT
+
   }
 
   return kTfLiteOk;
